@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //Dagger Hilt
     kotlin("kapt")
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
 
@@ -30,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "19"
     }
     buildFeatures {
         compose = true
@@ -52,6 +54,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.room.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,9 +64,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Dagger Hilt
+    implementation(libs.hilt.android.v2511)
+    kapt(libs.hilt.android.compiler.v2511)
+
     //Room
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
-    ksp("androidx.room:room-compiler:2.5.0")
 }
+
+//Dagger Hilt - Allow references to generated code
+kapt {
+   correctErrorTypes = true
+}
+
+

@@ -4,10 +4,38 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.room_practica.addtasks.domain.AddTaskUseCase
+import com.example.room_practica.addtasks.domain.GetTasksUseCase
 import com.example.room_practica.addtasks.ui.model.TaskModel
+import com.example.room_practica.addtasks.ui.TaskUiState.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class TasksViewModel @Inject constructor(
+    private val addTaskUseCase: AddTaskUseCase,
+    getTasksUseCase: GetTasksUseCase
+): ViewModel() {
 
-class TasksViewModel: ViewModel() {
+    //El caso de uso getTasksUseCase() nos devuelve el Flow continuo y cada vez que actualice
+    //los datos va a pasarlo a Success (ver data class en TaskUiState).
+    //Si por algún motivo falla y existe algún error, lo vamos a capturar y enviar al estado Error
+    //con el parámetro de la excepción que ha generado.
+    //El último modificador hará que cuando mi app o la pantalla esté en segundo plano hasta que no
+    //pasen 5 segundos no bloqueará o cancelará el Flow (por defecto es 0)
+    //Por ejemplo nuestra app pasará a segundo plano si nos llaman, o si desplegamos el menú superior
+    //para ver una notificación o un whatsapp, etc.
+    //Con stateIn, en el último argumento, también estamos asignando el estado inicial a Loading.
+    val uiState: StateFlow<TaskUiState> = getTasksUseCase().map(::Success)
+        .catch { Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog: LiveData<Boolean> = _showDialog
@@ -17,8 +45,8 @@ class TasksViewModel: ViewModel() {
 
     //Utilizamos mutableStateListOf porque se lleva mejor con LazyColumn a la hora
     //de refrescar la información en la vista...
-    private val _tasks = mutableStateListOf<TaskModel>()
-    val tasks: List<TaskModel> = _tasks
+    //private val _tasks = mutableStateListOf<TaskModel>()
+    //val tasks: List<TaskModel> = _tasks
 
     fun onDialogClose() {
         _showDialog.value = false
@@ -26,8 +54,12 @@ class TasksViewModel: ViewModel() {
 
     fun onTaskCreated() {
         onDialogClose()
-        //Log.i("dam2", _myTaskText.value ?: "")
-        _tasks.add(TaskModel(task = _myTaskText.value ?: ""))
+
+        //Un viewModelScope es una corutina.
+        viewModelScope.launch {
+            addTaskUseCase(TaskModel(task = _myTaskText.value ?: ""))
+        }
+
         _myTaskText.value = ""
     }
 
@@ -42,12 +74,12 @@ class TasksViewModel: ViewModel() {
     fun onItemRemove(taskModel: TaskModel) {
         //No podemos usar directamente _tasks.remove(taskModel) porque no es posible por el uso de let con copy para modificar el checkbox...
         //Para hacerlo correctamente, debemos previamente buscar la tarea en la lista por el id y después eliminarla
-        val task = _tasks.find { it.id == taskModel.id }
-        _tasks.remove(task)
+        //val task = _tasks.find { it.id == taskModel.id }
+        //_tasks.remove(task)
     }
 
     fun onCheckBoxSelected(taskModel: TaskModel) {
-        val index = _tasks.indexOf(taskModel)
+        //val index = _tasks.indexOf(taskModel)
 
         //Si se modifica directamente _tasks[index].selected = true no se recompone el item en el LazyColumn
         //Esto nos ha pasado ya en el proyecto BlackJack... ¿¿os acordáis?? :-(
@@ -60,7 +92,7 @@ class TasksViewModel: ViewModel() {
         //El método copy realiza una copia del objeto, pero modificando la propiedad selected a lo contrario
         //El truco está en que no se modifica solo la propiedad selected de tasks[index],
         //sino que se vuelve a reasignar para que la vista vea que se ha actualizado un item y se recomponga.
-        _tasks[index] = _tasks[index].let { it.copy(selected = !it.selected) }
+        //_tasks[index] = _tasks[index].let { it.copy(selected = !it.selected) }
     }
 
 }

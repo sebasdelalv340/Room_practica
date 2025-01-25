@@ -12,8 +12,9 @@ import androidx.compose.ui.Modifier
 import com.example.room_practica.addtasks.ui.TasksScreen
 import com.example.room_practica.addtasks.ui.TasksViewModel
 import com.example.room_practica.ui.theme.Room_practicaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val tasksViewModel: TasksViewModel by viewModels()

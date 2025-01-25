@@ -1,7 +1,19 @@
 [versions]
 agp = "8.7.3"
+comGoogleDaggerHiltAndroid = "2.28-alpha"
 googleHiltAndroid = "2.48"
+googleHiltAndroidCompiler = "3.10.1."
+googleHiltAndroidCompilerVersion = "2.28-alpha"
+googleHiltAndroidVersion = "2.46.1"
 hiltAndroid = "2.44"
+hiltAndroidCompiler = "3.10.1"
+hiltAndroidCompilerVersion = "2.51.1"
+hiltAndroidGradlePlugin = "2.46.1"
+hiltAndroidGradlePluginVersion = "2.44.2"
+hiltAndroidVersion = "2.51.1"
+hiltCompilerVersion = "1.0.0"
+hiltLifecycleViewmodelVersion = "1.0.0"
+hiltNavigationFragment = "1.2.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -12,17 +24,35 @@ activityCompose = "1.10.0"
 composeBom = "2024.04.01"
 roomCompiler = "2.6.1"
 roomCompilerVersion = "2.5.0"
+roomRuntime = "2.5.0"
 runtimeLivedata = "1.7.6"
+roomRuntimeAndroid = "2.7.0-alpha12"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationFragment" }
+androidx-hilt-compiler-v100 = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompilerVersion" }
+androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodelVersion" }
+androidx-hilt-navigation-fragment = { module = "androidx.hilt:hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltNavigationFragment" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-compiler-v250 = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
+androidx-room-runtime-v250 = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+dagger-hilt-android-compiler-v3101 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googleHiltAndroidCompiler" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+hilt-android-compiler-v228alpha = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googleHiltAndroidCompilerVersion" }
+hilt-android-compiler-v2511 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompilerVersion" }
+hilt-android-compiler-v3101 = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "googleHiltAndroid" }
+hilt-android-gradle-plugin-v2442 = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePluginVersion" }
+hilt-android-gradle-plugin-v2461 = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
+hilt-android-v228alpha = { module = "com.google.dagger:hilt-android", version.ref = "comGoogleDaggerHiltAndroid" }
+hilt-android-v2461 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroidVersion" }
 hilt-android-v248 = { module = "com.google.dagger:hilt-android", version.ref = "googleHiltAndroid" }
+hilt-android-v2511 = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "googleHiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -38,6 +68,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
