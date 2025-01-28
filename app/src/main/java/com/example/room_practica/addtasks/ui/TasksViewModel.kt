@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.room_practica.addtasks.domain.AddTaskUseCase
 import com.example.room_practica.addtasks.domain.GetTasksUseCase
+import com.example.room_practica.addtasks.domain.deleteTaskUseCase
 import com.example.room_practica.addtasks.ui.model.TaskModel
 import com.example.room_practica.addtasks.ui.TaskUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TasksViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
-    getTasksUseCase: GetTasksUseCase
+    getTasksUseCase: GetTasksUseCase,
+    private val deleteTaskUseCase: deleteTaskUseCase
 ): ViewModel() {
 
     //El caso de uso getTasksUseCase() nos devuelve el Flow continuo y cada vez que actualice
@@ -76,6 +78,9 @@ class TasksViewModel @Inject constructor(
         //Para hacerlo correctamente, debemos previamente buscar la tarea en la lista por el id y después eliminarla
         //val task = _tasks.find { it.id == taskModel.id }
         //_tasks.remove(task)
+        viewModelScope.launch {
+            deleteTaskUseCase(taskModel)
+        }
     }
 
     fun onCheckBoxSelected(taskModel: TaskModel) {

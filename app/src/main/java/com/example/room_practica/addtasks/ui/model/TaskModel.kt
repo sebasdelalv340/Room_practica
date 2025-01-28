@@ -11,3 +11,8 @@ data class TaskModel(
     var selected: Boolean = false
 )
 
+fun TaskModel.toData(): TaskEntity {
+    return TaskEntity(this.id, this.task, this.selected)
+}
+
+

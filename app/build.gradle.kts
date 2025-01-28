@@ -6,6 +6,7 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -41,6 +42,19 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    //Dagger Hilt - Allow references to generated code
+    kapt {
+        correctErrorTypes = true
+    }
+
 }
 
 dependencies {
@@ -68,17 +82,13 @@ dependencies {
     //Dagger Hilt
     implementation(libs.hilt.android.v2511)
     kapt(libs.hilt.android.compiler.v2511)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //Room
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-
 }
 
-//Dagger Hilt - Allow references to generated code
-kapt {
-   correctErrorTypes = true
-}
 
 

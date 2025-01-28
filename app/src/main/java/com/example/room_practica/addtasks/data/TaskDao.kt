@@ -1,7 +1,9 @@
 package com.example.room_practica.addtasks.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +17,9 @@ interface TaskDao {
     //y las librerías de Flow se encargarán de avisar cuando algún dato de la Entidad se haya agregado, actualizado o eliminado
     fun getTasks(): Flow<List<TaskEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTask(item:TaskEntity)
+
+    @Delete
+    suspend fun deleteTask(item: TaskEntity)
 }

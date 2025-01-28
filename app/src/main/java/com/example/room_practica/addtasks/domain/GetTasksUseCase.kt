@@ -12,5 +12,5 @@ import javax.inject.Inject
  * Gracias a Dagger Hilt lo vamos a inyectar en el constructor.
  */
 class GetTasksUseCase @Inject constructor(private val taskRepository: TaskRepository) {
-    operator fun invoke(): Flow<List<TaskModel>> = taskRepository.tasks
+    operator fun invoke(): Flow<List<TaskModel>> = taskRepository.getTask()
 }

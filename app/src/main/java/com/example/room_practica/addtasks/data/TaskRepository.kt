@@ -1,13 +1,13 @@
 package com.example.room_practica.addtasks.data
 
+import com.example.room_practica.addtasks.domain.repository.ITaskRepository
 import com.example.room_practica.addtasks.ui.model.TaskModel
+import com.example.room_practica.addtasks.ui.model.toData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
+class TaskRepository @Inject constructor(private val taskDao: TaskDao): ITaskRepository {
     //Podríamos haber creado directamente una lista de TaskEntity de la siguiente forma:
     //val tasks: Flow<List<TaskModel>> = taskDao.getTasks()
     //Pero a nivel de arquitectura no es una buena práctica por el acoplamiento de capas.
@@ -19,16 +19,19 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
     //Un mapper es cuando recibes unos datos y los devuelves transformados para cada una de las capas.
     //El método map es cómo un forEach, pero me va a devolver una lista de cada item
     //con la transformación que le hagamos mediante la expresión lambda.
-    val tasks: Flow<List<TaskModel>> = taskDao.getTasks().map { items -> items.map { it.toDomain() } }
 
-    suspend fun addTask(taskModel: TaskModel) {
+    override fun getTask(): Flow<List<TaskModel>> {
+        return taskDao.getTasks().map { items -> items.map { it.toDomain() } }
+    }
+
+    override suspend fun addTask(taskModel: TaskModel) {
         taskDao.addTask(taskModel.toData())
     }
 
-}
+    override suspend fun deleteTask(taskModel: TaskModel) {
+        taskDao.deleteTask(taskModel.toData())
+    }
 
-fun TaskModel.toData(): TaskEntity {
-    return TaskEntity(this.id, this.task, this.selected)
 }
 
 fun TaskEntity.toDomain(): TaskModel {
