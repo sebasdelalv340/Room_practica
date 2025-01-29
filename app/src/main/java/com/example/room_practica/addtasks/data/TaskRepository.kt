@@ -32,6 +32,10 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao): ITaskRep
         taskDao.deleteTask(taskModel.toData())
     }
 
+    override suspend fun updateTask(taskModel: TaskModel) {
+        taskDao.updateTask(taskModel.toData())
+    }
+
 }
 
 fun TaskEntity.toDomain(): TaskModel {

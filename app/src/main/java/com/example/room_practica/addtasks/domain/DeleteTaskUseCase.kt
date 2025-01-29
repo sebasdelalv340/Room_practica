@@ -7,7 +7,7 @@ import javax.inject.Inject
 /**
  * Caso de uso para borrar una tarea
  */
-class deleteTaskUseCase @Inject constructor(private val taskRepository: TaskRepository) {
+class DeleteTaskUseCase @Inject constructor(private val taskRepository: TaskRepository) {
     suspend operator fun invoke(taskModel: TaskModel) {
         taskRepository.deleteTask(taskModel)
     }
